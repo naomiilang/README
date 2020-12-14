@@ -99,10 +99,3 @@ function writeToFile(fileName, data) {
     fs.writeFileSync('./output/'+ fileName, data);
 }
 
-// function to initialize program
-function init() {
-
-}
-
-// function call to initialize program
-init();
