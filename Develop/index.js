@@ -1,6 +1,7 @@
 // install inquierer 
 const inquirer = require('inquirer');
-
+const generateMarkdown = require('./utils/generateMarkdown')
+const fs = require('fs');
 
 // array of questions for user
 const questions = () => {
@@ -58,7 +59,7 @@ const questions = () => {
             }
         },
         {
-            type: 'checkbox',
+            type: 'list',
             name: 'license',
             message: 'What type of license would you like to include? (Choose one)',
             choices: ['Apache License 2.0', 'GNU General Public License v3.0', 'MIT License', 'BSD 2-Clause "Simplified" License', 'BSD 3-Clause "New" or "Revised" License', 'Boost Software License 1.0', 'Creative Commons Zero v1.0 Universal', 'Eclipse Public License 2.0', 'GNU Affero General Public License v3.0', 'GNU General Public License v2.0', 'GNU Lesser General Public License v2.1', 'Mozilla Public License 2.0', 'The Unlicense']
@@ -83,17 +84,19 @@ const questions = () => {
             message: 'Enter test instructions here',
             name: 'test',
         },
-        {
-            type: 'input',
-            message: 'What is your GitHub username?',
-            name: 'user',
-        },
-    ]);
+    ])
 };
-questions();
+questions().then((answers) => {
+    console.log(answers); 
+    writeToFile('README.md', generateMarkdown(answers))
+});
 
 // function to write README file
-function writeToFile(fileName, data) {
+function writeToFile(fileName, data) { 
+    if (!fs.existsSync('./output')){
+        fs.mkdirSync('./output')
+    }
+    fs.writeFileSync('./output/'+ fileName, data);
 }
 
 // function to initialize program
